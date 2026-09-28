@@ -86,43 +86,90 @@ class ScholarshipValidator:
 
     @classmethod
     def validate_student_id(cls, value: Optional[str]) -> str:
+        clean = cls.sanitize_string(value)
+
+        if not clean:
+            raise ScholarshipValidationError("Student ID is required.")
+        if not cls.STUDENT_ID_REGEX.match(clean):
+            raise ScholarshipValidationError("Invalid Student ID. Expected format: YYYY-NNNN (e.g., 2024-0123).")
+
+        return clean
         """
+
         Validates CSPC student ID format (YYYY-NNNN).
         Returns: Normalized student ID.
         Raises: IDFormatError if invalid.
         """
         # TODO: Implement ID validation using cls.STUDENT_ID_REGEX
-        pass
 
     @classmethod
     def validate_email(cls, value: Optional[str]) -> str:
+        if value is None:
+            raise EmailDomainError("Institutional email is required.")
+
+        clean = value.strip().lower()
+
+        if not clean:
+            raise EmailDomainError("Institutional email is required.")
+
+        if not cls.CSPC_EMAIL_REGEX.match(clean):
+            raise EmailDomainError("Institutional email required (must end with @cspc.edu.ph).")
+
+        return clean
         """
         Validates institutional CSPC email address.
         Returns: Lowercased, sanitized email.
         Raises: EmailDomainError if invalid.
         """
         # TODO: Implement email validation using cls.CSPC_EMAIL_REGEX
-        pass
 
     @classmethod
     def validate_phone(cls, value: Optional[str]) -> str:
+        if value is None:
+            raise ScholarshipValidationError("Mobile number is required.")
+
+        clean = value.strip().replace(" ", "").replace("-", "")
+
+        if not clean:
+            raise ScholarshipValidationError("Mobile number is required.")
+
+        if not cls.PH_PHONE_REGEX.match(clean):
+            raise ScholarshipValidationError("Invalid mobile number. Expected: 09XXXXXXXXX or +639XXXXXXXXX.")
+
+        if clean.startswith("+63"):
+            clean = "0" + clean[3:]
+
+        return clean
         """
         Validates and standardizes Philippine mobile numbers to 09XXXXXXXXX.
         Returns: Normalized 11-digit phone string.
         Raises: ScholarshipValidationError if invalid.
         """
         # TODO: Implement phone validation using cls.PH_PHONE_REGEX
-        pass
 
     @classmethod
     def validate_gwa(cls, value: Optional[str]) -> float:
+        if value is None:
+            raise GWARangeError("GWA must be a valid number between 1.00 and 5.00.")
+
+        clean = value.strip()
+
+        try:
+            gwa_float = float(clean)
+        except (ValueError, TypeError):
+            raise GWARangeError("GWA must be a valid number between 1.00 and 5.00.")
+
+        if gwa_float < 1.00 or gwa_float > 5.00:
+            raise GWARangeError("GWA must be between 1.00 and 5.00.")
+
+        return round(gwa_float, 2)
         """
         Defensively parses string to float and checks 1.00 <= GWA <= 5.00.
         Returns: Parsed float value.
         Raises: GWARangeError if out of bounds or non-numeric.
         """
         # TODO: Implement defensive float parsing and range check
-        pass
+
 
 
 # ============================================================================
