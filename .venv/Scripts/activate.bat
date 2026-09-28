@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\laurence\cccs106-lab-form-validation-group-08-\.venv
+set VIRTUAL_ENV=C:\Users\admin\cccs106-lab-form-validation-group-08-\cccs106-lab-form-validation-group-08-\.venv
 
 if not defined PROMPT set PROMPT=$P$G
 

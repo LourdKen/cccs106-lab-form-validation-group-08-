@@ -345,7 +345,7 @@ def main(page: ft.Page):
 
         # Display green success Snackbar
         page.show_dialog(
-            ft.Snackbar(
+            ft.SnackBar(
                 content = ft.Text(
                     f"Application accepted for {clean_name}!"
                 ),
