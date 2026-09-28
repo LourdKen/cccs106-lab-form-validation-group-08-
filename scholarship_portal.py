@@ -89,9 +89,10 @@ class ScholarshipValidator:
         clean = cls.sanitize_string(value)
 
         if not clean:
-            raise ScholarshipValidationError("Student ID is required.")
+            raise IDFormatError("Student ID is required.")
+        
         if not cls.STUDENT_ID_REGEX.match(clean):
-            raise ScholarshipValidationError("Invalid Student ID. Expected format: YYYY-NNNN (e.g., 2024-0123).")
+            raise IDFormatError("Invalid Student ID. Expected format: YYYY-NNNN (e.g., 2024-0123).")
 
         return clean
         """
@@ -367,6 +368,8 @@ def main(page: ft.Page):
         )
 
         page.update()
+
+    page.update()
 
     # Layout Assembly
     submit_button = ft.FilledButton(
