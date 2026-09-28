@@ -308,13 +308,6 @@ def main(page: ft.Page):
 
         # If any validation errors occurred, abort and notify
         if has_errors:
-            page.show_dialog(
-                ft.SnackBar(
-                    content=ft.Text("Validation failed: Please correct highlighted fields."),
-                    bgcolor=ft.Colors.RED_700,
-                    behavior=ft.SnackBarBehavior.FLOATING
-                )
-            )
             page.update()
             return
 
