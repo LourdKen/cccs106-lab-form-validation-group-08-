@@ -243,6 +243,8 @@ def main(page: ft.Page):
         size=13
     )
 
+    intake_list = ft.Column(spacing=8)
+
     # ------------------------------------------------------------------------
     # REAL-TIME ERROR CLEARING HANDLERS (UX ENHANCEMENT)
     # ------------------------------------------------------------------------
@@ -346,6 +348,38 @@ def main(page: ft.Page):
 
         approved_applicants.append(applicant)
 
+        intake_list.controls.insert(
+            0,
+            ft.Container(
+                padding=10,
+                border_radius=8,
+                bgcolor=ft.Colors.with_opacity(0.08, ft.Colors.WHITE),
+                content=ft.Row(
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                    controls=[
+                        ft.Row(
+                            spacing=10,
+                            controls=[
+                                ft.Icon(ft.Icons.CHECK_CIRCLE, size=18, color=ft.Colors.GREEN_400),
+                                ft.Column(
+                                    spacing=2,
+                                    controls=[
+                                        ft.Text(f"{clean_name} ({clean_id})", size=13, weight=ft.FontWeight.BOLD),
+                                        ft.Text(
+                                            f"{applicant.program} • GWA: {clean_gwa:.2f} • {clean_email}",
+                                            size=10,
+                                            color=ft.Colors.GREY_400,
+                                        ),
+                                    ],
+                                ),
+                            ],
+                        ),
+                        ft.Text(applicant.submitted_at.strftime("%H:%M:%S"), size=10, color=ft.Colors.GREY_500),
+                    ],
+                ),
+            ),
+        )
+
         # Display green success Snackbar
         page.show_dialog(
             ft.SnackBar(
@@ -367,7 +401,7 @@ def main(page: ft.Page):
 
         # Update application count
         status_summary.value = (
-            f"Total approved applicants: {len(approved_applicants)}"
+            f"Applications registered this session: {len(approved_applicants)}"
         )
 
         page.update()
@@ -416,13 +450,26 @@ def main(page: ft.Page):
                 ft.Container(height=10),
                 submit_button,
                 ft.Container(height=5),
-                status_summary
+                status_summary,
+                ft.Divider(height=20, color=ft.Colors.OUTLINE_VARIANT),
+                ft.Row(
+                    controls=[
+                        ft.Icon(ft.Icons.HISTORY, size=16),
+                        ft.Text(
+                            "Recent Session Intake Contracts (In-Memory Pre-Persistence)",
+                            size=12,
+                            weight=ft.FontWeight.BOLD,
+                        ),
+                    ],
+                    spacing=8,
+                ),
+                intake_list
             ],
             spacing=14,
-            scroll=ft.ScrollMode.AUTO
+            scroll=ft.ScrollMode.AUTO,
+            expand = True
         )
     )
-
 
 if __name__ == "__main__":
     ft.run(main)
