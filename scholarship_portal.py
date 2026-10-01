@@ -323,7 +323,10 @@ def main(page: ft.Page):
         if has_errors:
             page.show_dialog(
                 ft.SnackBar(
-                    content=ft.Text("Validation failed: Please correct highlighted fields."),
+                    content=ft.Text(
+                        "Validation failed: " 
+                        "Please correct highlighted fields."
+                        ),
                     bgcolor=ft.Colors.RED_700,
                     behavior=ft.SnackBarBehavior.FLOATING
                 )
